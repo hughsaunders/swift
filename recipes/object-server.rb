@@ -25,7 +25,7 @@ platform_options = node["swift"]["platform"]
 
 platform_options["object_packages"].each do |pkg|
   package pkg do
-    action :install
+    action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
     options platform_options["override_options"] # retain configs
   end
 end

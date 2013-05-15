@@ -27,9 +27,9 @@ platform_options = node["swift"]["platform"]
 
 git_service = get_access_endpoint("swift-management-server","swift","ring-repo")
 
-platform_options["swift_packages"].each do |pkg|
+(['git'] + platform_options["swift_packages"]).each do |pkg|
   package pkg do
-    action :install
+    action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
   end
 end
 
@@ -55,10 +55,6 @@ user "swift" do
   shell "/bin/bash"
   action :modify
   only_if "/usr/bin/id swift"
-end
-
-package "git" do
-  action :install
 end
 
 # drop a ring puller script so we can dsh ring pulls

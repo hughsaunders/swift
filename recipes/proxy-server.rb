@@ -44,23 +44,23 @@ platform_options = node["swift"]["platform"]
 # install platform-specific packages
 platform_options["proxy_packages"].each do |pkg|
   package pkg do
-    action :install
+    action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
     options platform_options["override_options"]
   end
 end
 
 package "python-swauth" do
-  action :install
+  action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
   only_if { node["swift"]["authmode"] == "swauth" }
 end
 
 package "python-swift-informant" do
-  action :install
+  action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
   only_if { node["swift"]["use_informant"] }
 end
 
 package "python-keystone" do
-  action :install
+  action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
   only_if { node["swift"]["authmode"] == "keystone" }
 end
 

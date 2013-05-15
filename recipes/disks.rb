@@ -24,13 +24,13 @@ include_recipe "osops-utils"
 platform_options = node["swift"]["platform"]
 
 package "xfsprogs" do
-  action :install
+  action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
   only_if { platform?(%w{ubuntu debian fedora centos}) }
 end
 
 %w(parted util-linux).each do |pkg|
   package pkg do
-    action :install
+    action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
   end
 end
 
